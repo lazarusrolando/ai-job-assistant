@@ -26,7 +26,6 @@ class SuggestionRepository(private val context: Context) {
     val suggestions: Flow<List<JobSuggestion>> = context.suggestionStore.data.map { preferences ->
         val jsonStr = preferences[SUGGESTIONS] ?: return@map emptyList()
         try {
-            val listType = object : kotlinx.serialization.types.GenericType<List<String>>() {}
             val encoded = json.decodeFromString<List<String>>(jsonStr)
             encoded.mapNotNull { json.decodeFromString<JobSuggestion>(it) }
         } catch (e: Exception) {
