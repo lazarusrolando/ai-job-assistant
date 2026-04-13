@@ -1,5 +1,8 @@
 package io.lazar.jobassistant.data.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class JobSuggestion(
     val id: String = System.currentTimeMillis().toString(),
     val type: SuggestionType,
@@ -8,6 +11,7 @@ data class JobSuggestion(
     val timestamp: Long = System.currentTimeMillis()
 )
 
+@Serializable
 enum class SuggestionType {
     JOB_MATCH,
     JOB_DESCRIPTION,

@@ -8,9 +8,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
+import okhttp3.MediaType.Companion.toMediaType
 
 class OllamaClient(
-    private val baseUrl: String = "http://localhost:11434"
+    private val baseUrl: String = "http://10.0.2.2:11434/"
 ) {
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -62,9 +63,7 @@ class OllamaClient(
     suspend fun getModels(): Result<List<String>> {
         return try {
             val response = api.getModels()
-            val models = response["models"] as? List<Map<String, Any>>
-            val modelNames = models?.mapNotNull { it["name"] as? String } ?: emptyList()
-            Result.success(modelNames)
+            Result.success(response.models.map { it.name })
         } catch (e: Exception) {
             Result.failure(e)
         }

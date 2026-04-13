@@ -11,11 +11,13 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.lazar.jobassistant.ui.screens.*
 import io.lazar.jobassistant.ui.theme.AIJobAssistantTheme
 
@@ -28,14 +30,6 @@ sealed class Screen(val route: String, val title: String, val icon: androidx.com
 }
 
 class MainActivity : ComponentActivity() {
-
-    private val viewModelFactory by lazy {
-        ViewModelFactory(
-            application as JobAssistantApp,
-            (application as JobAssistantApp).suggestionRepository
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -55,6 +49,14 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JobAssistantApp() {
+    val context = LocalContext.current
+    val app = context.applicationContext as JobAssistantApp
+    val viewModelFactory = remember(app) {
+        ViewModelFactory(
+            app = app,
+            suggestionRepository = app.suggestionRepository
+        )
+    }
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -107,19 +109,19 @@ fun JobAssistantApp() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.JobMatch.route) {
-                JobMatchScreen()
+                JobMatchScreen(viewModel(factory = viewModelFactory))
             }
             composable(Screen.Description.route) {
-                JobDescriptionScreen()
+                JobDescriptionScreen(viewModel(factory = viewModelFactory))
             }
             composable(Screen.CareerPath.route) {
-                CareerPathScreen()
+                CareerPathScreen(viewModel(factory = viewModelFactory))
             }
             composable(Screen.History.route) {
-                HistoryScreen((application as JobAssistantApp).suggestionRepository)
+                HistoryScreen(app.suggestionRepository)
             }
             composable(Screen.Settings.route) {
-                SettingsScreen()
+                SettingsScreen(viewModel(factory = viewModelFactory))
             }
         }
     }

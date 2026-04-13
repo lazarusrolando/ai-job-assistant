@@ -23,3 +23,13 @@ data class OllamaResponse(
     val response: String,
     val done: Boolean
 )
+
+@Serializable
+data class OllamaTagsResponse(
+    val models: List<OllamaModel> = emptyList()
+)
+
+@Serializable
+data class OllamaModel(
+    val name: String
+)

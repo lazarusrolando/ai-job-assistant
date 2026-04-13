@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import io.lazar.jobassistant.data.api.OllamaClient
 import io.lazar.jobassistant.data.model.JobSuggestion
 import io.lazar.jobassistant.data.model.SuggestionType
+import io.lazar.jobassistant.data.repository.SettingsRepository
 import io.lazar.jobassistant.data.repository.SuggestionRepository
 import io.lazar.jobassistant.util.AiPromptTemplates
 import kotlinx.coroutines.flow.MutableStateFlow
