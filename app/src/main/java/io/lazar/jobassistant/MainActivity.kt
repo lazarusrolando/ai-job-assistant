@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    JobAssistantApp()
+                    JobAssistantAppContent()
                 }
             }
         }
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JobAssistantApp() {
+fun JobAssistantAppContent() {
     val context = LocalContext.current
     val app = context.applicationContext as JobAssistantApp
     val viewModelFactory = remember(app) {

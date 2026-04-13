@@ -56,17 +56,12 @@ fun SettingsScreen(
                 )
 
                 var expanded by remember { mutableStateOf(false) }
-                ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = it }
-                ) {
+                Box(modifier = Modifier.fillMaxWidth()) {
                     OutlinedTextField(
                         value = uiState.model,
-                        onValueChange = { viewModel.updateModel(it) },
+                        onValueChange = { },
                         label = { Text("Model") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .menuAnchor(),
+                        modifier = Modifier.fillMaxWidth(),
                         readOnly = true,
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                         colors = OutlinedTextFieldDefaults.colors(
@@ -74,9 +69,10 @@ fun SettingsScreen(
                             unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                         )
                     )
-                    ExposedDropdownMenu(
+                    DropdownMenu(
                         expanded = expanded,
-                        onDismissRequest = { expanded = false }
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         if (uiState.availableModels.isEmpty()) {
                             DropdownMenuItem(
@@ -95,6 +91,11 @@ fun SettingsScreen(
                             }
                         }
                     }
+                    Surface(
+                        onClick = { expanded = !expanded },
+                        modifier = Modifier.matchParentSize(),
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0f)
+                    ) {}
                 }
 
                 Text(
